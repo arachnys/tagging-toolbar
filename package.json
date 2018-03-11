@@ -1,0 +1,22 @@
+{
+  "name": "tagging-toolbar",
+  "version": "1.0.0",
+  "description": "Arachnys TaggingToolbar",
+  "main": "src/tagging_toolbar.js",
+  "scripts": {
+    "storybook": "start-storybook -p 9001 -c .storybook"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@storybook/react": "^3.3.15",
+    "babel-core": "^6.26.0"
+  },
+  "dependencies": {
+    "antd": "^3.2.3",
+    "ramda": "^0.25.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-select": "^1.2.1"
+  }
+}
