@@ -14,4 +14,8 @@ const createToolbar = ToolbarDisplay => {
 export const TaggingToolbar = createToolbar(ToolbarDisplay);
 export const AntdTaggingToolbar = createToolbar(AntdToolbarDisplay);
 
-export const getAllTagsFromGroups = R.pipe(R.pluck("tags"), R.flatten);
+export const getAllTagsFromConfig = R.pipe(
+  R.prop("groups"),
+  R.pluck("tags"),
+  R.flatten
+);

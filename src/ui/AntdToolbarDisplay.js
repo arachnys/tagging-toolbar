@@ -1,4 +1,5 @@
 import React from "react";
+import * as R from "ramda";
 import { Select } from "antd";
 import ToolbarWrapper from "./ToolbarWrapper";
 import "antd/dist/antd.css";
@@ -8,6 +9,8 @@ const styles = {
     width: "200px"
   }
 };
+
+const slugify = R.pipe(R.toLower, R.replace(" ", "-"));
 
 export default class AntdToolbarDisplay extends React.Component {
   handleChange = tagGroup => {
@@ -38,7 +41,11 @@ export default class AntdToolbarDisplay extends React.Component {
               style={styles.taggingSelect}
             >
               {getOptionsForTagGroup(tagGroup).map(option => (
-                <Select.Option key={option.value} value={option.value}>
+                <Select.Option
+                  className={slugify(tagGroup.displayName)}
+                  key={option.value}
+                  value={option.value}
+                >
                   {option.label}
                 </Select.Option>
               ))}

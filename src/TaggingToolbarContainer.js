@@ -1,51 +1,28 @@
 import React from "react";
 import * as R from "ramda";
 
+const getTagIds = R.pluck("tag");
+const getTags = R.prop("tags");
+const getTagIdsOfGroup = R.pipe(getTags, getTagIds);
+
 class TaggingToolbarContainer extends React.Component {
   constructor(props) {
     super(props);
-    const { selectedTags } = this.props;
 
     this.state = {
-      selectedTags: selectedTags || []
+      selectedTags: this.props.selectedTags
     };
   }
 
   findTagGroupByTagId = tagId => {
     const { taggingConfig } = this.props;
     const tagIdInGroup = group => {
-      return R.contains(tagId, R.pluck("tag", group.tags));
+      return R.contains(tagId, getTagIdsOfGroup(group));
     };
     return R.find(tagIdInGroup)(taggingConfig.groups);
   };
 
-  handleChange = tagGroup => {
-    return tagInCurrentGroup => {
-      const tagsOfCurrentGroup = R.map(R.prop("tag"), tagGroup.tags);
-
-      const isCurrentGroupTag = R.contains(R.__, tagsOfCurrentGroup);
-      const removeTagIfInCurrentGroup = R.reject(isCurrentGroupTag);
-      const tagsNotInCurrentGroup = removeTagIfInCurrentGroup(
-        this.state.selectedTags
-      );
-
-      const getTagGroup = R.curry(this.findTagGroupByTagId);
-      const isGroupActive = R.curry(
-        this.isTagGroupActive(tagsNotInCurrentGroup)
-      );
-      const isTagActive = R.pipe(getTagGroup, isGroupActive);
-      const removeInactiveTags = R.filter(isTagActive);
-
-      let tagsToSave = R.concat(tagInCurrentGroup, tagsNotInCurrentGroup);
-      tagsToSave = removeInactiveTags(tagsToSave);
-
-      this.props.onChange(tagsToSave);
-      // Optimistic update
-      this.setState({ selectedTags: tagsToSave });
-    };
-  };
-
-  isTagGroupActive(selectedTags) {
+  isTagGroupActive = selectedTags => {
     return tagGroup => {
       const hasNoCondition = R.pipe(R.has("condition"), R.not);
       const hasSelectedTags = R.pipe(
@@ -56,7 +33,28 @@ class TaggingToolbarContainer extends React.Component {
       );
       return R.either(hasNoCondition, hasSelectedTags)(tagGroup);
     };
-  }
+  };
+
+  handleChange = tagGroup => {
+    return tagInCurrentGroup => {
+      const tagsOfCurrentGroup = getTagIdsOfGroup(tagGroup);
+      const tagsNotInCurrentGroup = R.difference(
+        this.state.selectedTags,
+        tagsOfCurrentGroup
+      );
+
+      const isGroupActive = this.isTagGroupActive(tagsNotInCurrentGroup);
+      const isTagActive = R.pipe(this.findTagGroupByTagId, isGroupActive);
+      const removeInactiveTags = R.filter(isTagActive);
+
+      let tagsToSave = R.concat(tagInCurrentGroup, tagsNotInCurrentGroup);
+      tagsToSave = removeInactiveTags(tagsToSave);
+
+      this.props.onChange(tagsToSave);
+      // Optimistic update
+      this.setState({ selectedTags: tagsToSave });
+    };
+  };
 
   getVisibleTagGroups = () => {
     const { taggingConfig } = this.props;

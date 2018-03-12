@@ -6,7 +6,8 @@
   "scripts": {
     "storybook": "start-storybook -p 9001 -c .storybook",
     "prettier": "./node_modules/.bin/prettier --write 'src/**/*.js'",
-    "test": "./node_modules/.bin/jest",
+    "test": "./node_modules/.bin/jest --config jest.config.json",
+    "test-watch": "./node_modules/.bin/jest --watchAll --config jest.config.json",
     "eslint": "./node_modules/.bin/eslint 'src/**/*.js'"
   },
   "author": "",
@@ -16,15 +17,21 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-runtime": "^6.26.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.18.2",
+    "eslint-plugin-jest": "^21.15.0",
     "eslint-plugin-react": "^7.7.0",
     "jest": "^22.4.2",
+    "jest-css-modules-transform": "^1.0.5",
     "prettier": "1.11.1",
     "prop-types": "^15.6.1",
     "request": "^2.85.0"
   },
   "dependencies": {
     "antd": "^3.2.3",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
     "immutable": "^3.8.2",
     "ramda": "^0.25.0",
     "react": "^16.2.0",

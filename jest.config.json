@@ -1,0 +1,10 @@
+{
+    "setupFiles": ["<rootDir>/jest.setup.js"],
+    "transform": {
+      ".+\\.(css|styl|less|sass|scss)$": "<rootDir>/node_modules/jest-css-modules-transform",
+      ".+\\.(js|jsx)$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+    	"node_modules/(?!(react-select/dist/react-select.css)|(antd/dist/antd.css))"
+    ]
+}
