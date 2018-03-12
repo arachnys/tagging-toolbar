@@ -1,4 +1,6 @@
+// eslint-disable-next-line
 import React from "react";
+
 import { css } from "glamor";
 
 const styles = {

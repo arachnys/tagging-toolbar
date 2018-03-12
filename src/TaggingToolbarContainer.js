@@ -4,7 +4,7 @@ import * as R from "ramda";
 class TaggingToolbarContainer extends React.Component {
   constructor(props) {
     super(props);
-    const { selectedTags, taggingConfig } = this.props;
+    const { selectedTags } = this.props;
 
     this.state = {
       selectedTags: selectedTags || []

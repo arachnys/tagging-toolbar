@@ -19,7 +19,6 @@ export default class AntdToolbarDisplay extends React.Component {
 
   render() {
     const {
-      onTagGroupChange,
       getOptionsForTagGroup,
       getSelectedForTagGroup,
       getVisibleTagGroups,

@@ -3,3 +3,6 @@ run:
 
 format:
 	yarn run prettier
+
+lint:
+	yarn run eslint
