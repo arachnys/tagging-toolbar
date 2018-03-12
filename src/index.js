@@ -5,13 +5,10 @@ import TaggingToolbarContainer from "./TaggingToolbarContainer";
 import ToolbarDisplay from "./ui/ToolbarDisplay";
 import AntdToolbarDisplay from "./ui/AntdToolbarDisplay";
 
-const createToolbar = (ToolbarDisplay) => {
-    return (props) => (
-        <TaggingToolbarContainer
-            toolbarDisplay={ToolbarDisplay}
-            {...props}
-        />
-    );
+const createToolbar = ToolbarDisplay => {
+  return props => (
+    <TaggingToolbarContainer toolbarDisplay={ToolbarDisplay} {...props} />
+  );
 };
 
 export const TaggingToolbar = createToolbar(ToolbarDisplay);
