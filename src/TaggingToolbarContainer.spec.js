@@ -5,7 +5,7 @@ import { AntdTaggingToolbar } from "./index";
 const AntdTestConfig = {
   name: "AntdTaggingToolbar",
 
-  getComponent: (props, selectedTags=[]) => {
+  getComponent: (props, selectedTags = []) => {
     return mount(<AntdTaggingToolbar {...props} selectedTags={selectedTags} />);
   },
 
@@ -18,8 +18,12 @@ const AntdTestConfig = {
     return dropdowns.filterWhere(n => n.text() === dropdownName);
   },
 
-  clickDropdown: (dropdown) => {
+  clickDropdown: dropdown => {
     dropdown.simulate("click");
+  },
+
+  isDropdownDisabled: dropdown => {
+    return dropdown.hasClass("ant-select-disabled");
   },
 
   getOptions: (component, dropdownName) => {
@@ -109,6 +113,41 @@ describe("TaggingToolbar", () => {
             "Verified hit",
             "Name mismatch"
           ]);
+        });
+      });
+
+      describe("default state when show inactive groups is enabled", () => {
+        it("should display a dropdown for each group", () => {
+          const props = getProps();
+          const comp = config.getComponent({
+            showInactiveGroups: true,
+            ...props
+          });
+
+          expect(config.getDropdownByName(comp, "Relevance").length).toEqual(1);
+          expect(config.getDropdownByName(comp, "Hit type").length).toEqual(1);
+        });
+
+        it("should disable groups for which the condition is not met", () => {
+          const props = getProps();
+          const comp = config.getComponent({
+            showInactiveGroups: true,
+            ...props
+          });
+
+          const hitDropdown = config.getDropdownByName(comp, "Hit type");
+          expect(config.isDropdownDisabled(hitDropdown)).toBeTruthy();
+        });
+
+        it("should enable groups once the condition is met", () => {
+          const props = getProps();
+          const comp = config.getComponent(
+            { showInactiveGroups: true, ...props },
+            [1]
+          );
+
+          const hitDropdown = config.getDropdownByName(comp, "Hit type");
+          expect(config.isDropdownDisabled(hitDropdown)).toBeFalsy();
         });
       });
 

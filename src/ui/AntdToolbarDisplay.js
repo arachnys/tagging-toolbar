@@ -25,6 +25,7 @@ export default class AntdToolbarDisplay extends React.Component {
       getOptionsForTagGroup,
       getSelectedForTagGroup,
       getVisibleTagGroups,
+      isTagGroupActive,
       wrapper
     } = this.props;
     const Wrapper = wrapper ? wrapper : "div";
@@ -39,6 +40,7 @@ export default class AntdToolbarDisplay extends React.Component {
               value={getSelectedForTagGroup(tagGroup)}
               allowClear={true}
               style={styles.taggingSelect}
+              disabled={!isTagGroupActive(tagGroup)}
             >
               {getOptionsForTagGroup(tagGroup).map(option => (
                 <Select.Option

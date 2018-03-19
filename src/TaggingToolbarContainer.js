@@ -57,12 +57,16 @@ class TaggingToolbarContainer extends React.Component {
   };
 
   getVisibleTagGroups = () => {
-    const { taggingConfig } = this.props;
+    const { taggingConfig, showInactiveGroups } = this.props;
 
-    return R.filter(
-      this.isTagGroupActive(this.state.selectedTags),
-      taggingConfig.groups
+    if (showInactiveGroups) {
+      return taggingConfig.groups;
+    }
+
+    const removeInactiveGroups = R.filter(
+      this.isTagGroupActive(this.state.selectedTags)
     );
+    return removeInactiveGroups(taggingConfig.groups);
   };
 
   getOptionsForTagGroup = tagGroup => {
@@ -94,6 +98,7 @@ class TaggingToolbarContainer extends React.Component {
     return (
       <ToolbarDisplay
         getVisibleTagGroups={this.getVisibleTagGroups}
+        isTagGroupActive={this.isTagGroupActive(this.state.selectedTags)}
         onTagGroupChange={this.handleChange}
         getOptionsForTagGroup={this.getOptionsForTagGroup}
         getSelectedForTagGroup={this.getSelectedForTagGroup}
